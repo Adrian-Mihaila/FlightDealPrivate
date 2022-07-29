@@ -2,7 +2,8 @@ from data_manager import DataManager
 from flight_search import FlightSearch
 from notification_manager import NotificationManager
 import time
-import schedule
+# import schedule
+from schedule import every, run_pending
 
 sheet_data = DataManager().get_destination_data()
 sheet_data_users = DataManager().get_email_list()
@@ -135,8 +136,8 @@ def create_email():
 
 
 # Schedule to run the method only once every day
-schedule.every().day.at("10:00").do(create_email)
+every().day.at("10:00").do(create_email)
 
 while True:
-    schedule.run_pending()
+    run_pending()
     time.sleep(60)  # wait one minute
