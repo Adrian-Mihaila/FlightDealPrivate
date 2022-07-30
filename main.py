@@ -2,7 +2,8 @@ from data_manager import DataManager
 from flight_search import FlightSearch
 from notification_manager import NotificationManager
 from datetime import datetime, timedelta
-from threading import Timer
+# from threading import Timer
+import time
 
 sheet_data = DataManager().get_destination_data()
 sheet_data_users = DataManager().get_email_list()
@@ -182,11 +183,13 @@ def create_email():
 # Run the method only once every day
 while True:
     today = datetime.today()
-    tomorrow = today.replace(day=today.day, hour=1, minute=0, second=0, microsecond=0) + timedelta(days=1)
+    tomorrow = today.replace(day=today.day, hour=5, minute=0, second=0, microsecond=0) + timedelta(days=1)
     delta_t = tomorrow-today
 
     seconds_remaining = delta_t.seconds+1
-
-    t = Timer(seconds_remaining, create_email)
-    t.start()
+    print(seconds_remaining)
+    time.sleep(seconds_remaining)
+    create_email()
+    # t = Timer(seconds_remaining, create_email)
+    # t.start()
 
