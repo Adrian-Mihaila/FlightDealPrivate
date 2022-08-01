@@ -2,7 +2,6 @@ from data_manager import DataManager
 from flight_search import FlightSearch
 from notification_manager import NotificationManager
 from datetime import datetime, timedelta
-# from threading import Timer
 import time
 
 sheet_data = DataManager().get_destination_data()
@@ -35,51 +34,6 @@ notification_manager = NotificationManager()
 #         continue
 
 # # Send email for best deals
-
-# <style type="text/css">
-#           table {
-#             background: white;
-#             border-radius:3px;
-#             border-collapse: collapse;
-#             height: auto;
-#             max-width: 900px;
-#             padding:5px;
-#             width: 100%;
-#             animation: float 5s infinite;
-#           }
-#           th {
-#             color:#FFF80A;;
-#             background:#143F6B;
-#             border-bottom: 4px solid #FFF80A;
-#             font-size:14px;
-#             font-weight: 300;
-#             padding:10px;
-#             text-align:center;
-#             vertical-align:middle;
-#           }
-#           tr {
-#             border-top: 2px solid #FFF80A;
-#             border-bottom: 2px solid #FFF80A;
-#             border-left: 2px solid #FFF80A;
-#             color:#293462;
-#             font-size:16px;
-#             font-weight:normal;
-#           }
-#           tr:hover td {
-#             background:#205375;
-#             color:#FFFFFF;
-#             border-top: 1px solid #22262e;
-#           }
-#           td {
-#             background:#FFFFFF;
-#             padding:10px;
-#             text-align:left;
-#             vertical-align:middle;
-#             font-weight:300;
-#             font-size:13px;
-#             border-right: 2px solid #FFF80A;
-#           }
-#         </style>
 
 def create_email():
     mail_content = """
@@ -181,6 +135,7 @@ def create_email():
 
 
 # Run the method only once every day
+
 while True:
     today = datetime.today()
     tomorrow = today.replace(day=today.day, hour=5, minute=0, second=0, microsecond=0) + timedelta(days=1)
@@ -190,6 +145,5 @@ while True:
     print(seconds_remaining)
     time.sleep(seconds_remaining)
     create_email()
-    # t = Timer(seconds_remaining, create_email)
-    # t.start()
+
 
