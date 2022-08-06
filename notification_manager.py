@@ -1,12 +1,13 @@
 from data_manager import DataManager
 from data_manager import STEINHQ_ENDPOINT_U, STEINHQ_HEADER
 from flight_search import FlightSearch
-import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from bs4 import BeautifulSoup
+import smtplib
 import imaplib
 import email
-from bs4 import BeautifulSoup
+
 import requests
 
 sheet_data = DataManager().get_destination_data()
@@ -172,16 +173,17 @@ class NotificationManager:
         email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list
         new_email_list = self.update_email_list()  # call the new email list of dictionaries
 
-        # Update the sheet with new users and send email to the emails in the list
-        for credentials_dict in new_email_list:
-            if credentials_dict["Email"] in email_list:
-                continue
-            else:
-                print("New user found")
-                email_list.append(credentials_dict["Email"])
-                query = [credentials_dict]
-                add_new_user = requests.post(url=STEINHQ_ENDPOINT_U, json=query, headers=STEINHQ_HEADER)
-                add_new_user.raise_for_status()
+        # Update the sheet with new users
+        if len(new_email_list) != 0:
+            for credentials_dict in new_email_list:
+                if credentials_dict["Email"] in email_list:
+                    continue
+                else:
+                    print("New user found")
+                    email_list.append(credentials_dict["Email"])
+                    query = [credentials_dict]
+                    add_new_user = requests.post(url=STEINHQ_ENDPOINT_U, json=query, headers=STEINHQ_HEADER)
+                    add_new_user.raise_for_status()
 
         for _ in email_list:
             self.send_email(mail_content=self.mail_content, receiver_address_list=_.split())  # Send email

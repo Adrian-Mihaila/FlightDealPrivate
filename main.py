@@ -28,7 +28,7 @@ notification_manager = NotificationManager()
 #         continue
 
 # Run the method only once every day
-
+# notification_manager.create_email()  # only for testing
 while True:
     today = datetime.today()
     tomorrow = today.replace(day=today.day, hour=5, minute=0, second=0, microsecond=0) + timedelta(days=1)
