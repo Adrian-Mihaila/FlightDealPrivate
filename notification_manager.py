@@ -1,8 +1,13 @@
 from data_manager import DataManager
+from data_manager import STEINHQ_ENDPOINT_U, STEINHQ_HEADER
 from flight_search import FlightSearch
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import imaplib
+import email
+from bs4 import BeautifulSoup
+import requests
 
 sheet_data = DataManager().get_destination_data()
 sheet_data_users = DataManager().get_email_list()
@@ -13,7 +18,7 @@ class NotificationManager:
     """Configures and sends the email"""
 
     def __init__(self):
-        """Configures the email addresses and password"""
+        """Configures the email's credentials"""
 
         self.sender_address = "mihaila.adrian.and.joanne@gmail.com"
         self.sender_pass = "oebxjqjkuolumvlf"
@@ -82,6 +87,59 @@ class NotificationManager:
                   <th>Fare:</th>
                 </tr> """
 
+    def update_email_list(self):
+        """Reads the emails with new user's credentials and updates the google sheet"""
+
+        # https://www.systoolsgroup.com/imap/
+        gmail_host = 'imap.gmail.com'
+
+        # set connection
+        mail = imaplib.IMAP4_SSL(gmail_host)
+
+        # login
+        mail.login(self.sender_address, self.sender_pass)
+
+        # select inbox
+        mail.select("INBOX")
+
+        # select specific mails
+        _, selected_mails = mail.search(None, '(FROM "webwave@webwavecms.com")')
+
+        # total number of mails from specific user
+        selected_mails_list = selected_mails[0].split()
+        # print("Total Messages from webwave@webwavecms.com:", len(selected_mails_list))
+        query_list = []
+        for num in selected_mails_list:
+            _, data = mail.fetch(num, '(RFC822)')
+            _, bytes_data = data[0]
+
+            # convert the byte data to message
+            email_message = email.message_from_bytes(bytes_data)
+
+            for part in email_message.walk():
+                # print(part.__getitem__("div"))
+                if part.get_content_type() == "text/plain" or part.get_content_type() == "text/html":
+                    message = part.get_payload(decode=True)
+
+                    message_object = email.message_from_string(message.decode())
+                    soup = BeautifulSoup(message_object.get_payload(), "html.parser")
+                    mail_content = soup.find_all(name="div", class_="content")
+
+                    content_str = ""
+                    for content in mail_content:
+                        content_str += content.getText().strip() + " "
+                    data_list = (content_str.split())
+                    first_name = data_list[1]
+                    last_name = data_list[2]
+                    email_data = data_list[0].lower()
+                    credentials_dict = {
+                        "First Name": first_name,
+                        "Last Name": last_name,
+                        "Email": email_data
+                    }
+                    query_list.append(credentials_dict)
+        return query_list
+
     def create_email(self):
         """Append the flight details for each found flight deal to the mail_content and send the email"""
 
@@ -108,13 +166,25 @@ class NotificationManager:
             except IndexError:
                 continue
 
-        # Send the email
+        # Get the email list
         self.mail_content += "</thead></table></body></html><br><br><h3>Regards,<br>Adrian Mihăilă</h2>"
-        email_list = [row["Email"] for row in sheet_data_users]
 
-        for email in email_list:
-            self.send_email(mail_content=self.mail_content, receiver_address_list=email.split())
-        # print(email_list)
+        email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list
+        new_email_list = self.update_email_list()  # call the new email list of dictionaries
+
+        # Update the sheet with new users and send email to the emails in the list
+        for credentials_dict in new_email_list:
+            if credentials_dict["Email"] in email_list:
+                continue
+            else:
+                print("New user found")
+                email_list.append(credentials_dict["Email"])
+                query = [credentials_dict]
+                add_new_user = requests.post(url=STEINHQ_ENDPOINT_U, json=query, headers=STEINHQ_HEADER)
+                add_new_user.raise_for_status()
+
+        for _ in email_list:
+            self.send_email(mail_content=self.mail_content, receiver_address_list=_.split())  # Send email
 
     def send_email(self, mail_content, receiver_address_list):
         """Sends the email"""
@@ -136,4 +206,3 @@ class NotificationManager:
             connection.login(self.sender_address, self.sender_pass)  # login with mail_id and password
             text = message.as_string()
             connection.sendmail(self.sender_address, receiver_address, text)  # receiver_address Needs to be a LIST
-        print("Mail Sent")

@@ -38,5 +38,4 @@ while True:
     print(seconds_remaining)
     time.sleep(seconds_remaining)
     notification_manager.create_email()
-
-
+    print("Mail Sent")
