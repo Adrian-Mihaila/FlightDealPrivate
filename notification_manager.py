@@ -21,8 +21,8 @@ class NotificationManager:
     def __init__(self):
         """Configures the email's credentials"""
 
-        self.sender_address = "mihaila.adrian.and.joanne@gmail.com"
-        self.sender_pass = "oebxjqjkuolumvlf"
+        self.sender_address = "my.pythondroid@gmail.com"
+        self.sender_pass = "zpqazcfwtiwvfbac"  # "oebxjqjkuolumvlf"
         self.mail_content = """
     <!DOCTYPE html>
     <html>
