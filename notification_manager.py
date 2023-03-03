@@ -22,7 +22,7 @@ class NotificationManager:
         """Configures the email's credentials"""
 
         self.sender_address = "my.pythondroid@gmail.com"
-        self.sender_pass = "zpqazcfwtiwvfbac"  # "oebxjqjkuolumvlf"
+        self.sender_pass = "juawybogorauuxfz"  # "oebxjqjkuolumvlf" juawybogorauuxfz
         self.mail_content = """
     <!DOCTYPE html>
     <html>
