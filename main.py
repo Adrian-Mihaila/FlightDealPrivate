@@ -27,7 +27,7 @@ notification_manager = NotificationManager()
 #     except IndexError:
 #         continue
 
-# Run the method only once every day
+# # Run the method only once every day
 notification_manager.create_email()  # only for testing
 while True:
     today = datetime.today()
