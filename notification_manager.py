@@ -77,16 +77,17 @@ class NotificationManager:
         <h2>Today's best flight deals:</h2>
       <table>
       <thead>
-            <tr style="border: 1px solid #1b1e24;">
-                <tr>
-                  <th>Destination Country:</th>
-                  <th>Fly from:</th>
-                  <th>Fly to:</th>
-                  <th>Stop overs:</th>
-                  <th>Dates:</th>
-                  <th>Ticket:</th>
-                  <th>Fare:</th>
-                </tr> """
+        <tr style="border: 1px solid #1b1e24;">
+        <tr>
+          <th>Destination Country:</th>
+          <th>Fly from:</th>
+          <th>Fly to:</th>
+          <th>Stop overs:</th>
+          <th>Dates:</th>
+          <th>Ticket:</th>
+          <th>Fare:</th>
+        </tr>
+      </thead>"""
 
     def update_email_list(self):
         """Reads the emails with new user's credentials and updates the google sheet"""
@@ -147,29 +148,39 @@ class NotificationManager:
         for row in sheet_data:
             try:
                 flight = search.check_flights(origin_destination="OTP", city_destination_code=row["IATA Code"])
-                if flight.flight_price < int(row["Lowest Price"]):
-                    if flight.stop_overs > 0:
-                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                        f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                        f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                        f"<td>{flight.stop_overs} stop over, via {flight.via_city}</td>" \
-                                        f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                        f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                        f"<td>€{flight.flight_price}</td></tr>"
-                    else:
-                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                        f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                        f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                        f"<td>No stop overs</td>" \
-                                        f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                        f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                        f"<td>€{flight.flight_price}</td></tr>"
+                if flight.stop_overs == 2:
+                    self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
+                                    f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                    f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                    f"<td>{flight.stop_overs} stop overs (See ticket for details)</td>" \
+                                    f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                    f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                    f"<td>€{flight.flight_price}</td></tr>"
+
+                elif flight.stop_overs == 1:
+                    self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
+                                    f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                    f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                    f"<td>{flight.stop_overs} stop over, via {flight.via_city_1}</td>" \
+                                    f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                    f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                    f"<td>€{flight.flight_price}</td></tr>"
+                else:
+                    self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
+                                    f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                    f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                    f"<td>No stop overs</td>" \
+                                    f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                    f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                    f"<td>€{flight.flight_price}</td></tr>"
             except IndexError:
                 continue
+        # End the email €
+        self.mail_content += """</table></body></html><br><br>
+        <p>Please ensure that you open the ticket links in a private window to get the actual price.</p>
+        <h3>Regards,<br>Adrian Mihăilă</h2>"""
 
         # Get the email list
-        self.mail_content += "</thead></table></body></html><br><br><h3>Regards,<br>Adrian Mihăilă</h2>"
-
         email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list
         new_email_list = self.update_email_list()  # call the new email list of dictionaries
 

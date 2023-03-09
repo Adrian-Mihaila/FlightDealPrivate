@@ -5,7 +5,7 @@ class FlightData:
 
     def __init__(self, flight_price, origin_city, origin_airport, destination_city,
                  destination_airport, destination_country, out_date, return_date,
-                 flight_ticket, stop_overs=0, via_city=""):
+                 flight_ticket, stop_overs=0, via_city_1="", via_city_2=""):
 
         self.flight_price = flight_price
         self.origin_city = origin_city
@@ -16,5 +16,6 @@ class FlightData:
         self.out_date = out_date
         self.return_date = return_date
         self.stop_overs = stop_overs
-        self.via_city = via_city
+        self.via_city_1 = via_city_1
+        self.via_city_2 = via_city_2
         self.flight_ticket = flight_ticket
