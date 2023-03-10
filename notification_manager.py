@@ -105,7 +105,7 @@ class NotificationManager:
         mail.select("INBOX")
 
         # select specific mails
-        _, selected_mails = mail.search(None, '(FROM "webwave@webwavecms.com")')
+        _, selected_mails = mail.search(None, '(FROM "webwave@webwavecms.com")') # SUBJECT "New member alert"
 
         # total number of mails from specific user
         selected_mails_list = selected_mails[0].split()
