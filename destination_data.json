@@ -4,6 +4,14 @@
         "IATA Code": "AUH"
     },
     {
+        "City": "Abuja ",
+        "IATA Code": "ABV"
+    },
+    {
+        "City": "Adelaide",
+        "IATA Code": "ADL"
+    },
+    {
         "City": "Alicante",
         "IATA Code": "ALC"
     },
@@ -14,6 +22,10 @@
     {
         "City": "Amsterdam",
         "IATA Code": "AMS"
+    },
+    {
+        "City": "Anchorage (AK)",
+        "IATA Code": "ANC"
     },
     {
         "City": "Andorra la Vella",
@@ -28,12 +40,48 @@
         "IATA Code": "AYT"
     },
     {
+        "City": "Antananarivo ",
+        "IATA Code": "TNR"
+    },
+    {
+        "City": "Antigua",
+        "IATA Code": "ANU"
+    },
+    {
+        "City": "Aracaju",
+        "IATA Code": "AJU"
+    },
+    {
         "City": "Ashgabat",
         "IATA Code": "ASB"
     },
     {
+        "City": "Asmara ",
+        "IATA Code": "ASM"
+    },
+    {
         "City": "Athens",
         "IATA Code": "ATH"
+    },
+    {
+        "City": "Atlantic City",
+        "IATA Code": "ACY"
+    },
+    {
+        "City": "Bahamas",
+        "IATA Code": "NAS"
+    },
+    {
+        "City": "Bahrain ",
+        "IATA Code": "BAH"
+    },
+    {
+        "City": "Baku ",
+        "IATA Code": "BAK"
+    },
+    {
+        "City": "Bamako ",
+        "IATA Code": "BKO"
     },
     {
         "City": "Bangkok",
@@ -52,6 +100,10 @@
         "IATA Code": "BEG"
     },
     {
+        "City": "Benghazi",
+        "IATA Code": "BEN"
+    },
+    {
         "City": "Berlin",
         "IATA Code": "BER"
     },
@@ -64,8 +116,20 @@
         "IATA Code": "BIO"
     },
     {
+        "City": "Bogota ",
+        "IATA Code": "BOG"
+    },
+    {
+        "City": "Brasilia ",
+        "IATA Code": "BSB"
+    },
+    {
         "City": "Bratislava",
         "IATA Code": "BTS"
+    },
+    {
+        "City": "Bridgetown ",
+        "IATA Code": "BGI"
     },
     {
         "City": "Brussels",
@@ -76,12 +140,28 @@
         "IATA Code": "BUD"
     },
     {
+        "City": "Buenos Aires ",
+        "IATA Code": "BUE"
+    },
+    {
+        "City": "Cairo ",
+        "IATA Code": "CAI"
+    },
+    {
         "City": "Cape Town",
         "IATA Code": "CPT"
     },
     {
+        "City": "Caracas ",
+        "IATA Code": "CCS"
+    },
+    {
         "City": "Cebu",
         "IATA Code": "CEB"
+    },
+    {
+        "City": "Chisinau ",
+        "IATA Code": "KIV"
     },
     {
         "City": "Cologne",
@@ -92,8 +172,16 @@
         "IATA Code": "CPH"
     },
     {
+        "City": "Corfu (island)",
+        "IATA Code": "CFU"
+    },
+    {
         "City": "Cork",
         "IATA Code": "ORK"
+    },
+    {
+        "City": "Denpasar",
+        "IATA Code": "DPS"
     },
     {
         "City": "Dhaka",
@@ -124,8 +212,20 @@
         "IATA Code": "GVA"
     },
     {
+        "City": "Glasgow",
+        "IATA Code": "GLA"
+    },
+    {
         "City": "Gothenburg",
         "IATA Code": "GOT"
+    },
+    {
+        "City": "Guatemala City ",
+        "IATA Code": "GUA"
+    },
+    {
+        "City": "Hamburg",
+        "IATA Code": "HAM"
     },
     {
         "City": "Hamburg",
@@ -140,6 +240,18 @@
         "IATA Code": "HEL"
     },
     {
+        "City": "Ho Chi Minh City",
+        "IATA Code": "SGN"
+    },
+    {
+        "City": "Hong Kong",
+        "IATA Code": "HKG"
+    },
+    {
+        "City": "Honolulu (HI)",
+        "IATA Code": "HNL"
+    },
+    {
         "City": "Islamabad",
         "IATA Code": "ISB"
     },
@@ -152,6 +264,18 @@
         "IATA Code": "JKT"
     },
     {
+        "City": "Karachi",
+        "IATA Code": "KHI"
+    },
+    {
+        "City": "Kathmandu ",
+        "IATA Code": "KTM"
+    },
+    {
+        "City": "Kinshasa ",
+        "IATA Code": "FIH"
+    },
+    {
         "City": "Kraków",
         "IATA Code": "KRK"
     },
@@ -162,6 +286,10 @@
     {
         "City": "Kuwait-City",
         "IATA Code": "KWI"
+    },
+    {
+        "City": "Lagos",
+        "IATA Code": "LOS"
     },
     {
         "City": "Lisbon",
@@ -220,6 +348,10 @@
         "IATA Code": "MUC"
     },
     {
+        "City": "Nairobi ",
+        "IATA Code": "NBO"
+    },
+    {
         "City": "Naples",
         "IATA Code": "NAP"
     },
@@ -236,12 +368,20 @@
         "IATA Code": "OSL"
     },
     {
+        "City": "Panama City ",
+        "IATA Code": "PTY"
+    },
+    {
         "City": "Paris",
         "IATA Code": "PAR"
     },
     {
         "City": "Podgorica",
         "IATA Code": "TGD"
+    },
+    {
+        "City": "Port au Prince ",
+        "IATA Code": "PAP"
     },
     {
         "City": "Porto",
@@ -324,6 +464,10 @@
         "IATA Code": "VAR"
     },
     {
+        "City": "Venice",
+        "IATA Code": "VCE"
+    },
+    {
         "City": "Vienna",
         "IATA Code": "VIE"
     },
@@ -338,5 +482,13 @@
     {
         "City": "Zagreb",
         "IATA Code": "ZAG"
+    },
+    {
+        "City": "Zanzibar City",
+        "IATA Code": "ZNZ"
+    },
+    {
+        "City": "Zurich",
+        "IATA Code": "ZRH"
     }
 ]

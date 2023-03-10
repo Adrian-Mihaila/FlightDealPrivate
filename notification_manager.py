@@ -269,30 +269,30 @@ class NotificationManager:
                 flight = check_flights(origin_destination="OTP", city_destination_code=row["IATA Code"])
                 if flight.stop_overs == 2:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                    f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                    f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                    f"<td>{flight.stop_overs} stop overs (See ticket for details)</td>" \
-                                    f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                    f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                    f"<td>€{flight.flight_price}</td></tr>"
+                                         f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                         f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                         f"<td>{flight.stop_overs} stop overs (See ticket for details)</td>" \
+                                         f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                         f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                         f"<td>€{flight.flight_price}</td></tr>"
                     print(f"Added row {flight.destination_city} 2 SO")
                 elif flight.stop_overs == 1:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                    f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                    f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                    f"<td>{flight.stop_overs} stop over, via {flight.via_city_1}</td>" \
-                                    f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                    f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                    f"<td>€{flight.flight_price}</td></tr>"
+                                         f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                         f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                         f"<td>{flight.stop_overs} stop over, via {flight.via_city_1}</td>" \
+                                         f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                         f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                         f"<td>€{flight.flight_price}</td></tr>"
                     print(f"Added row {flight.destination_city} 1 SO")
                 else:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                    f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                    f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                    f"<td>No stop overs</td>" \
-                                    f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                    f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                    f"<td>€{flight.flight_price}</td></tr>"
+                                         f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                         f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                         f"<td>No stop overs</td>" \
+                                         f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                         f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                         f"<td>€{flight.flight_price}</td></tr>"
                     print(f"Added row {flight.destination_city} 0 SO")
             except IndexError:
                 continue
