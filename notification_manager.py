@@ -156,7 +156,7 @@ class NotificationManager:
                                     f"<td>{flight.out_date} to {flight.return_date}</td>" \
                                     f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                     f"<td>€{flight.flight_price}</td></tr>"
-
+                    print(f"added row {flight.destination_city} 2 so")
                 elif flight.stop_overs == 1:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
                                     f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
@@ -165,6 +165,7 @@ class NotificationManager:
                                     f"<td>{flight.out_date} to {flight.return_date}</td>" \
                                     f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                     f"<td>€{flight.flight_price}</td></tr>"
+                    print(f"added row {flight.destination_city} 1 so")
                 else:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
                                     f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
@@ -173,12 +174,13 @@ class NotificationManager:
                                     f"<td>{flight.out_date} to {flight.return_date}</td>" \
                                     f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                     f"<td>€{flight.flight_price}</td></tr>"
+                    print(f"added row {flight.destination_city} 0 so")
             except IndexError:
                 continue
         # End the email €
         self.mail_content += """</table></body></html><br><br>
-        <p>Please ensure that you open the ticket links in a private window to get the actual price.</p>
-        <h3>Regards,<br>Adrian Mihăilă</h2>"""
+        <p><i>Please ensure that you open the ticket links in a private window to get the actual price.</i></p>
+        <h2>Regards,<br>Adrian Mihăilă</h2>"""
 
         # Get the email list
         email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list

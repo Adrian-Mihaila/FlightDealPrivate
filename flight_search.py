@@ -87,7 +87,7 @@ class FlightSearch:
                 params["max_stopovers"] = 4
                 flight_response = requests.get(url=API_ENDPOINT_SEARCH, params=params, headers=HEADERS)
                 flight_data = flight_response.json()["data"][0]
-                print(flight_data)
+
                 current_flight_data_2 = FlightData(
                     flight_price=flight_data["price"],
                     origin_city=flight_data["route"][0]["cityFrom"],
@@ -110,8 +110,7 @@ class FlightSearch:
         test_3 = two_stopover()
 
         sorted_dict = {k: v for k, v in sorted(values_dict.items(), key=lambda item: item[1])}
-        print(sorted_dict)
-        cheapest_flight = next(iter(sorted_dict))
+        cheapest_flight = list(sorted_dict.keys())[0]
 
         if cheapest_flight == "current_flight_data_2":
             return test_3
@@ -119,7 +118,8 @@ class FlightSearch:
             return test_2
         elif cheapest_flight == "current_flight_data_0":
             return test_1
-
+        else:
+            return test_1
     def get_destination_code(self, city_name):
         """Returns the flight code according to the destination's city name"""
 
