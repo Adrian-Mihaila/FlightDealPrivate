@@ -1,18 +1,132 @@
 from data_manager import DataManager
 from data_manager import STEINHQ_ENDPOINT_U, STEINHQ_HEADER
-from flight_search import FlightSearch
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from bs4 import BeautifulSoup
 import smtplib
 import imaplib
 import email
-
+import json
 import requests
+from datetime import datetime, timedelta
+from flight_data import FlightData
 
-sheet_data = DataManager().get_destination_data()
+tomorrow = datetime.now() + timedelta(days=1)
+six_months_from_now = datetime.now() + timedelta(days=180)
+
+API_KEY = "8nrhLLE0o2OiHKRLWq0GDuWbKkQ2DKJh"
+API_ENDPOINT_QUERY = "https://tequila-api.kiwi.com/locations/query"
+API_ENDPOINT_SEARCH = "https://tequila-api.kiwi.com/v2/search"
+HEADERS = {
+    "apikey": API_KEY
+}
+
 sheet_data_users = DataManager().get_email_list()
-search = FlightSearch()
+
+
+def check_flights(origin_destination, city_destination_code):
+    """Passes the parameters, requests all the flight details from API
+    and save only the required ones to print the destination city and the price"""
+    values_dict = {}
+    params = {
+        "fly_from": origin_destination,
+        "fly_to": city_destination_code,
+        "date_from": tomorrow.strftime("%d/%m/%Y"),
+        "date_to": six_months_from_now.strftime("%d/%m/%Y"),
+        "nights_in_dst_from": 3,
+        "nights_in_dst_to": 16,
+        "flight_type": "round",
+        "curr": "EUR",
+        "select_airlines": "0B",  # avoid blue air
+        "select_airlines_exclude": "True",
+        "sort": "price",
+        "asc": "1"
+    }
+
+    def no_stopover():
+        try:
+            params["max_stopovers"] = 0
+            flight_response = requests.get(url=API_ENDPOINT_SEARCH, params=params, headers=HEADERS)
+            flight_data = flight_response.json()["data"][0]
+
+            current_flight_data_0 = FlightData(
+                flight_price=flight_data["price"],
+                origin_city=flight_data["route"][0]["cityFrom"],
+                origin_airport=flight_data["route"][0]["flyFrom"],
+                destination_city=flight_data["route"][0]["cityTo"],
+                destination_airport=flight_data["route"][0]["flyTo"],
+                destination_country=flight_data["countryTo"]["name"],
+                out_date=flight_data["route"][0]["local_departure"].split("T")[0],
+                return_date=flight_data["route"][1]["local_departure"].split("T")[0],
+                flight_ticket=flight_data["deep_link"]
+            )
+            values_dict["current_flight_data_0"] = current_flight_data_0.flight_price
+            return current_flight_data_0
+        except IndexError:
+            return
+
+    def one_stopover():
+        try:
+            params["max_stopovers"] = 2
+            flight_response = requests.get(url=API_ENDPOINT_SEARCH, params=params, headers=HEADERS)
+            flight_data = flight_response.json()["data"][0]
+
+            current_flight_data_1 = FlightData(
+                flight_price=flight_data["price"],
+                origin_city=flight_data["route"][0]["cityFrom"],
+                origin_airport=flight_data["route"][0]["flyFrom"],
+                destination_city=flight_data["cityTo"],
+                destination_airport=flight_data["flyTo"],
+                destination_country=flight_data["countryTo"]["name"],
+                out_date=flight_data["route"][0]["local_departure"].split("T")[0],
+                return_date=flight_data["route"][-1]["local_departure"].split("T")[0],
+                stop_overs=1,
+                via_city_1=flight_data["route"][0]["cityTo"],
+                flight_ticket=flight_data["deep_link"]
+            )
+            values_dict["current_flight_data_1"] = current_flight_data_1.flight_price
+            return current_flight_data_1
+        except IndexError:
+            return
+
+    def two_stopover():
+        try:
+            params["max_stopovers"] = 4
+            flight_response = requests.get(url=API_ENDPOINT_SEARCH, params=params, headers=HEADERS)
+            flight_data = flight_response.json()["data"][0]
+
+            current_flight_data_2 = FlightData(
+                flight_price=flight_data["price"],
+                origin_city=flight_data["route"][0]["cityFrom"],
+                origin_airport=flight_data["route"][0]["flyFrom"],
+                destination_city=flight_data["cityTo"],
+                destination_airport=flight_data["flyTo"],
+                destination_country=flight_data["countryTo"]["name"],
+                out_date=flight_data["route"][0]["local_departure"].split("T")[0],
+                return_date=flight_data["route"][-1]["local_departure"].split("T")[0],
+                stop_overs=2,
+                flight_ticket=flight_data["deep_link"]
+            )
+            values_dict["current_flight_data_2"] = current_flight_data_2.flight_price
+            return current_flight_data_2
+        except IndexError:
+            return
+
+    test_1 = no_stopover()
+    test_2 = one_stopover()
+    test_3 = two_stopover()
+
+    sorted_dict = {k: v for k, v in sorted(values_dict.items(), key=lambda item: item[1])}
+    cheapest_flight = list(sorted_dict.keys())[0]
+
+    if cheapest_flight == "current_flight_data_2":
+        return test_3
+    elif cheapest_flight == "current_flight_data_1":
+        return test_2
+    elif cheapest_flight == "current_flight_data_0":
+        return test_1
+    else:
+        return test_1
 
 
 class NotificationManager:
@@ -22,7 +136,7 @@ class NotificationManager:
         """Configures the email's credentials"""
 
         self.sender_address = "my.pythondroid@gmail.com"
-        self.sender_pass = "juawybogorauuxfz"  # "oebxjqjkuolumvlf" juawybogorauuxfz
+        self.sender_pass = "juawybogorauuxfz"
         self.mail_content = """
     <!DOCTYPE html>
     <html>
@@ -105,15 +219,17 @@ class NotificationManager:
         mail.select("INBOX")
 
         # select specific mails
-        _, selected_mails = mail.search(None, '(FROM "webwave@webwavecms.com")') # SUBJECT "New member alert"
+        _, selected_mails = mail.search(None, '(SUBJECT "New member alert")')
 
         # total number of mails from specific user
         selected_mails_list = selected_mails[0].split()
         # print("Total Messages from webwave@webwavecms.com:", len(selected_mails_list))
         query_list = []
         for num in selected_mails_list:
+            # _, data = mail.fetch(num, '(RFC822)')
+            # _, bytes_data = data[0]
             _, data = mail.fetch(num, '(RFC822)')
-            _, bytes_data = data[0]
+            bytes_data = data[0][1]
 
             # convert the byte data to message
             email_message = email.message_from_bytes(bytes_data)
@@ -145,9 +261,12 @@ class NotificationManager:
     def create_email(self):
         """Append the flight details for each found flight deal to the mail_content and send the email"""
 
-        for row in sheet_data:
+        with open("destination_data.json", "r") as data_file:
+            destination_data = json.load(data_file)
+
+        for row in destination_data:
             try:
-                flight = search.check_flights(origin_destination="OTP", city_destination_code=row["IATA Code"])
+                flight = check_flights(origin_destination="OTP", city_destination_code=row["IATA Code"])
                 if flight.stop_overs == 2:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
                                     f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
@@ -156,7 +275,7 @@ class NotificationManager:
                                     f"<td>{flight.out_date} to {flight.return_date}</td>" \
                                     f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                     f"<td>€{flight.flight_price}</td></tr>"
-                    print(f"added row {flight.destination_city} 2 so")
+                    print(f"Added row {flight.destination_city} 2 SO")
                 elif flight.stop_overs == 1:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
                                     f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
@@ -165,7 +284,7 @@ class NotificationManager:
                                     f"<td>{flight.out_date} to {flight.return_date}</td>" \
                                     f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                     f"<td>€{flight.flight_price}</td></tr>"
-                    print(f"added row {flight.destination_city} 1 so")
+                    print(f"Added row {flight.destination_city} 1 SO")
                 else:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
                                     f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
@@ -174,13 +293,15 @@ class NotificationManager:
                                     f"<td>{flight.out_date} to {flight.return_date}</td>" \
                                     f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                     f"<td>€{flight.flight_price}</td></tr>"
-                    print(f"added row {flight.destination_city} 0 so")
+                    print(f"Added row {flight.destination_city} 0 SO")
             except IndexError:
                 continue
-        # End the email €
-        self.mail_content += """</table></body></html><br><br>
-        <p><i>Please ensure that you open the ticket links in a private window to get the actual price.</i></p>
-        <h2>Regards,<br>Adrian Mihăilă</h2>"""
+
+        # End of the email
+        self.mail_content += """</table><br><br>
+        <p><i>Ensure that you open the ticket link in a private window to get the actual price. If you wish to 
+        unsubscribe from this email, please reply with "Unsubscribe".</i></p>
+        <h2>Regards,<br>Adrian Mihăilă</h2></body></html>"""
 
         # Get the email list
         email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list
@@ -198,7 +319,8 @@ class NotificationManager:
                     add_new_user = requests.post(url=STEINHQ_ENDPOINT_U, json=query, headers=STEINHQ_HEADER)
                     add_new_user.raise_for_status()
 
-        for _ in email_list:
+        # Send the email to each recipient
+        for _ in email_list[:1]:
             self.send_email(mail_content=self.mail_content, receiver_address_list=_.split())  # Send email
 
     def send_email(self, mail_content, receiver_address_list):

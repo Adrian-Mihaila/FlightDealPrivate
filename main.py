@@ -1,10 +1,20 @@
 from notification_manager import NotificationManager
-from datetime import datetime, timedelta
-import time
+# from datetime import datetime, timedelta
+# import time
 
 notification_manager = NotificationManager()
 
 # # Get the destination code for each city in the google sheet and update it
+# def get_destination_code(self, city_name):
+#     """Returns the flight code according to the destination's city name"""
+#
+#     params = {
+#         "term": city_name,
+#         "location_types": "city"
+#     }
+#     flight_response = requests.get(url=API_ENDPOINT_QUERY, params=params, headers=HEADERS)
+#     flight_code = flight_response.json()["locations"][0]["code"]
+#     return flight_code
 # print(sheet_data)
 # for row in sheet_data:
 #     if row["iataCode"] == "":

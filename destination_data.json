@@ -1,0 +1,342 @@
+[
+    {
+        "City": "Abu Dhabi",
+        "IATA Code": "AUH"
+    },
+    {
+        "City": "Alicante",
+        "IATA Code": "ALC"
+    },
+    {
+        "City": "Amman",
+        "IATA Code": "AMM"
+    },
+    {
+        "City": "Amsterdam",
+        "IATA Code": "AMS"
+    },
+    {
+        "City": "Andorra la Vella",
+        "IATA Code": "LEU"
+    },
+    {
+        "City": "Ankara",
+        "IATA Code": "ANK"
+    },
+    {
+        "City": "Antalya",
+        "IATA Code": "AYT"
+    },
+    {
+        "City": "Ashgabat",
+        "IATA Code": "ASB"
+    },
+    {
+        "City": "Athens",
+        "IATA Code": "ATH"
+    },
+    {
+        "City": "Bangkok",
+        "IATA Code": "BKK"
+    },
+    {
+        "City": "Barcelona",
+        "IATA Code": "BCN"
+    },
+    {
+        "City": "Beijing",
+        "IATA Code": "BJS"
+    },
+    {
+        "City": "Belgrade",
+        "IATA Code": "BEG"
+    },
+    {
+        "City": "Berlin",
+        "IATA Code": "BER"
+    },
+    {
+        "City": "Bern",
+        "IATA Code": "BRN"
+    },
+    {
+        "City": "Bilbao",
+        "IATA Code": "BIO"
+    },
+    {
+        "City": "Bratislava",
+        "IATA Code": "BTS"
+    },
+    {
+        "City": "Brussels",
+        "IATA Code": "BRU"
+    },
+    {
+        "City": "Budapest",
+        "IATA Code": "BUD"
+    },
+    {
+        "City": "Cape Town",
+        "IATA Code": "CPT"
+    },
+    {
+        "City": "Cebu",
+        "IATA Code": "CEB"
+    },
+    {
+        "City": "Cologne",
+        "IATA Code": "CGN"
+    },
+    {
+        "City": "Copenhagen",
+        "IATA Code": "CPH"
+    },
+    {
+        "City": "Cork",
+        "IATA Code": "ORK"
+    },
+    {
+        "City": "Dhaka",
+        "IATA Code": "DAC"
+    },
+    {
+        "City": "Doha",
+        "IATA Code": "DOH"
+    },
+    {
+        "City": "Dublin",
+        "IATA Code": "DUB"
+    },
+    {
+        "City": "Dubrovnik",
+        "IATA Code": "DBV"
+    },
+    {
+        "City": "Faro",
+        "IATA Code": "FAO"
+    },
+    {
+        "City": "Frankfurt",
+        "IATA Code": "FRA"
+    },
+    {
+        "City": "Geneva",
+        "IATA Code": "GVA"
+    },
+    {
+        "City": "Gothenburg",
+        "IATA Code": "GOT"
+    },
+    {
+        "City": "Hamburg",
+        "IATA Code": "HAM"
+    },
+    {
+        "City": "Hanoi",
+        "IATA Code": "HAN"
+    },
+    {
+        "City": "Helsinki",
+        "IATA Code": "HEL"
+    },
+    {
+        "City": "Islamabad",
+        "IATA Code": "ISB"
+    },
+    {
+        "City": "Istanbul",
+        "IATA Code": "IST"
+    },
+    {
+        "City": "Jakarta",
+        "IATA Code": "JKT"
+    },
+    {
+        "City": "Kraków",
+        "IATA Code": "KRK"
+    },
+    {
+        "City": "Kuala Lumpur",
+        "IATA Code": "KUL"
+    },
+    {
+        "City": "Kuwait-City",
+        "IATA Code": "KWI"
+    },
+    {
+        "City": "Lisbon",
+        "IATA Code": "LIS"
+    },
+    {
+        "City": "Ljubljana",
+        "IATA Code": "LJU"
+    },
+    {
+        "City": "London",
+        "IATA Code": "LON"
+    },
+    {
+        "City": "Luxembourg",
+        "IATA Code": "LUX"
+    },
+    {
+        "City": "Lyon",
+        "IATA Code": "LYS"
+    },
+    {
+        "City": "Madrid",
+        "IATA Code": "MAD"
+    },
+    {
+        "City": "Mahe",
+        "IATA Code": "SEZ"
+    },
+    {
+        "City": "Malé",
+        "IATA Code": "MLE"
+    },
+    {
+        "City": "Manila",
+        "IATA Code": "MNL"
+    },
+    {
+        "City": "Marseille",
+        "IATA Code": "MRS"
+    },
+    {
+        "City": "Milan",
+        "IATA Code": "MXP"
+    },
+    {
+        "City": "Minsk",
+        "IATA Code": "MSQ"
+    },
+    {
+        "City": "Monaco",
+        "IATA Code": "MCM"
+    },
+    {
+        "City": "Munich",
+        "IATA Code": "MUC"
+    },
+    {
+        "City": "Naples",
+        "IATA Code": "NAP"
+    },
+    {
+        "City": "New Delhi",
+        "IATA Code": "DEL"
+    },
+    {
+        "City": "New York",
+        "IATA Code": "NYC"
+    },
+    {
+        "City": "Oslo",
+        "IATA Code": "OSL"
+    },
+    {
+        "City": "Paris",
+        "IATA Code": "PAR"
+    },
+    {
+        "City": "Podgorica",
+        "IATA Code": "TGD"
+    },
+    {
+        "City": "Porto",
+        "IATA Code": "OPO"
+    },
+    {
+        "City": "Prague",
+        "IATA Code": "PRG"
+    },
+    {
+        "City": "Reykjavik",
+        "IATA Code": "REK"
+    },
+    {
+        "City": "Riga",
+        "IATA Code": "RIX"
+    },
+    {
+        "City": "Rome",
+        "IATA Code": "ROM"
+    },
+    {
+        "City": "Ruhr",
+        "IATA Code": "DTM"
+    },
+    {
+        "City": "Salonic",
+        "IATA Code": "SKG"
+    },
+    {
+        "City": "San Francisco",
+        "IATA Code": "SFO"
+    },
+    {
+        "City": "Seoul",
+        "IATA Code": "SEL"
+    },
+    {
+        "City": "Seville",
+        "IATA Code": "SVQ"
+    },
+    {
+        "City": "Singapore",
+        "IATA Code": "SIN"
+    },
+    {
+        "City": "Sofia",
+        "IATA Code": "SOF"
+    },
+    {
+        "City": "Stockholm",
+        "IATA Code": "STO"
+    },
+    {
+        "City": "Sydney",
+        "IATA Code": "SYD"
+    },
+    {
+        "City": "Taipei",
+        "IATA Code": "TPE"
+    },
+    {
+        "City": "Tel Aviv",
+        "IATA Code": "TLV"
+    },
+    {
+        "City": "Tokyo",
+        "IATA Code": "TYO"
+    },
+    {
+        "City": "Valencia",
+        "IATA Code": "VLC"
+    },
+    {
+        "City": "Valletta",
+        "IATA Code": "MLA"
+    },
+    {
+        "City": "Varna",
+        "IATA Code": "VAR"
+    },
+    {
+        "City": "Vienna",
+        "IATA Code": "VIE"
+    },
+    {
+        "City": "Vilnius",
+        "IATA Code": "VNO"
+    },
+    {
+        "City": "Warsaw",
+        "IATA Code": "WAW"
+    },
+    {
+        "City": "Zagreb",
+        "IATA Code": "ZAG"
+    }
+]
