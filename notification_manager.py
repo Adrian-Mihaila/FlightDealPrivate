@@ -275,7 +275,7 @@ class NotificationManager:
         with open("destination_data.json", "r") as data_file:
             destination_data = json.load(data_file)
 
-        for row in destination_data[2:3]:
+        for row in destination_data:
             try:
                 flight = check_flights(origin_destination="OTP", city_destination_code=row["IATA Code"])
                 if flight.stop_overs == 2:
@@ -316,6 +316,7 @@ class NotificationManager:
         <p><i>Ensure that you open the ticket link in a private window to get the actual price, 
         however the price can change at any time. If you wish to 
         unsubscribe from this email, please reply with "Unsubscribe".</i></p>
+        <p>My flight club can be found <a href=https://y3kksc.webwave.dev/info>here</a> and feel free to share it.</p>
         <h2>Happy Travels,<br>Adrian Mihăilă</h2></body></html>"""
 
         # Get the email list
