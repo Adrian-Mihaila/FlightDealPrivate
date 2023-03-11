@@ -4,7 +4,7 @@
         "IATA Code": "AUH"
     },
     {
-        "City": "Abuja ",
+        "City": "Abuja",
         "IATA Code": "ABV"
     },
     {
@@ -24,7 +24,7 @@
         "IATA Code": "AMS"
     },
     {
-        "City": "Anchorage (AK)",
+        "City": "Anchorage",
         "IATA Code": "ANC"
     },
     {
@@ -40,7 +40,7 @@
         "IATA Code": "AYT"
     },
     {
-        "City": "Antananarivo ",
+        "City": "Antananarivo",
         "IATA Code": "TNR"
     },
     {
@@ -72,15 +72,15 @@
         "IATA Code": "NAS"
     },
     {
-        "City": "Bahrain ",
+        "City": "Bahrain",
         "IATA Code": "BAH"
     },
     {
-        "City": "Baku ",
+        "City": "Baku",
         "IATA Code": "BAK"
     },
     {
-        "City": "Bamako ",
+        "City": "Bamako",
         "IATA Code": "BKO"
     },
     {
@@ -116,11 +116,11 @@
         "IATA Code": "BIO"
     },
     {
-        "City": "Bogota ",
+        "City": "Bogota",
         "IATA Code": "BOG"
     },
     {
-        "City": "Brasilia ",
+        "City": "Brasilia",
         "IATA Code": "BSB"
     },
     {
@@ -140,11 +140,11 @@
         "IATA Code": "BUD"
     },
     {
-        "City": "Buenos Aires ",
+        "City": "Buenos Aires",
         "IATA Code": "BUE"
     },
     {
-        "City": "Cairo ",
+        "City": "Cairo",
         "IATA Code": "CAI"
     },
     {
@@ -152,7 +152,7 @@
         "IATA Code": "CPT"
     },
     {
-        "City": "Caracas ",
+        "City": "Caracas",
         "IATA Code": "CCS"
     },
     {
@@ -160,7 +160,7 @@
         "IATA Code": "CEB"
     },
     {
-        "City": "Chisinau ",
+        "City": "Chisinau",
         "IATA Code": "KIV"
     },
     {
@@ -172,7 +172,7 @@
         "IATA Code": "CPH"
     },
     {
-        "City": "Corfu (island)",
+        "City": "Corfu",
         "IATA Code": "CFU"
     },
     {
@@ -220,7 +220,7 @@
         "IATA Code": "GOT"
     },
     {
-        "City": "Guatemala City ",
+        "City": "Guatemala City",
         "IATA Code": "GUA"
     },
     {
@@ -268,7 +268,7 @@
         "IATA Code": "KTM"
     },
     {
-        "City": "Kinshasa ",
+        "City": "Kinshasa",
         "IATA Code": "FIH"
     },
     {
@@ -344,7 +344,7 @@
         "IATA Code": "MUC"
     },
     {
-        "City": "Nairobi ",
+        "City": "Nairobi",
         "IATA Code": "NBO"
     },
     {
@@ -364,7 +364,7 @@
         "IATA Code": "OSL"
     },
     {
-        "City": "Panama City ",
+        "City": "Panama City",
         "IATA Code": "PTY"
     },
     {
@@ -376,7 +376,7 @@
         "IATA Code": "TGD"
     },
     {
-        "City": "Port au Prince ",
+        "City": "Port au Prince",
         "IATA Code": "PAP"
     },
     {

@@ -34,7 +34,7 @@ def check_flights(origin_destination, city_destination_code):
         "date_from": tomorrow.strftime("%d/%m/%Y"),
         "date_to": six_months_from_now.strftime("%d/%m/%Y"),
         "nights_in_dst_from": 3,
-        "nights_in_dst_to": 16,
+        "nights_in_dst_to": 14,
         "flight_type": "round",
         "curr": "EUR",
         "select_airlines": "0B",  # avoid blue air
@@ -313,9 +313,10 @@ class NotificationManager:
 
         # End of the email
         self.mail_content += """</table><br><br>
-        <p><i>Ensure that you open the ticket link in a private window to get the actual price. If you wish to 
+        <p><i>Ensure that you open the ticket link in a private window to get the actual price, 
+        however the price can change at any time. If you wish to 
         unsubscribe from this email, please reply with "Unsubscribe".</i></p>
-        <h2>Regards,<br>Adrian Mihăilă</h2></body></html>"""
+        <h2>Happy Travels,<br>Adrian Mihăilă</h2></body></html>"""
 
         # Get the email list
         email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list
