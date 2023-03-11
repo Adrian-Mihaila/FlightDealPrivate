@@ -48,7 +48,7 @@ def check_flights(origin_destination, city_destination_code):
             params["max_stopovers"] = 0
             flight_response = requests.get(url=API_ENDPOINT_SEARCH, params=params, headers=HEADERS)
             flight_data = flight_response.json()["data"][0]
-
+            # print(flight_data)
             current_flight_data_0 = FlightData(
                 flight_price=flight_data["price"],
                 origin_city=flight_data["route"][0]["cityFrom"],
@@ -58,6 +58,7 @@ def check_flights(origin_destination, city_destination_code):
                 destination_country=flight_data["countryTo"]["name"],
                 out_date=flight_data["route"][0]["local_departure"].split("T")[0],
                 return_date=flight_data["route"][1]["local_departure"].split("T")[0],
+                nights_in_destination=flight_data["nightsInDest"],
                 flight_ticket=flight_data["deep_link"]
             )
             values_dict["current_flight_data_0"] = current_flight_data_0.flight_price
@@ -70,7 +71,7 @@ def check_flights(origin_destination, city_destination_code):
             params["max_stopovers"] = 2
             flight_response = requests.get(url=API_ENDPOINT_SEARCH, params=params, headers=HEADERS)
             flight_data = flight_response.json()["data"][0]
-
+            # print(flight_data)
             current_flight_data_1 = FlightData(
                 flight_price=flight_data["price"],
                 origin_city=flight_data["route"][0]["cityFrom"],
@@ -80,11 +81,15 @@ def check_flights(origin_destination, city_destination_code):
                 destination_country=flight_data["countryTo"]["name"],
                 out_date=flight_data["route"][0]["local_departure"].split("T")[0],
                 return_date=flight_data["route"][-1]["local_departure"].split("T")[0],
+                nights_in_destination=flight_data["nightsInDest"],
                 stop_overs=1,
-                via_city_1=flight_data["route"][0]["cityTo"],
                 flight_ticket=flight_data["deep_link"]
             )
             values_dict["current_flight_data_1"] = current_flight_data_1.flight_price
+            # route_dict = []
+            # for _ in flight_data["route"]:
+            #     route_dict.append(_['cityFrom'])
+            # print(f"route_dict: {route_dict}")
             return current_flight_data_1
         except IndexError:
             return
@@ -94,7 +99,7 @@ def check_flights(origin_destination, city_destination_code):
             params["max_stopovers"] = 4
             flight_response = requests.get(url=API_ENDPOINT_SEARCH, params=params, headers=HEADERS)
             flight_data = flight_response.json()["data"][0]
-
+            # print(flight_data)
             current_flight_data_2 = FlightData(
                 flight_price=flight_data["price"],
                 origin_city=flight_data["route"][0]["cityFrom"],
@@ -104,10 +109,15 @@ def check_flights(origin_destination, city_destination_code):
                 destination_country=flight_data["countryTo"]["name"],
                 out_date=flight_data["route"][0]["local_departure"].split("T")[0],
                 return_date=flight_data["route"][-1]["local_departure"].split("T")[0],
+                nights_in_destination=flight_data["nightsInDest"],
                 stop_overs=2,
                 flight_ticket=flight_data["deep_link"]
             )
             values_dict["current_flight_data_2"] = current_flight_data_2.flight_price
+            # route_dict = []
+            # for _ in flight_data["route"]:
+            #     route_dict.append(_['cityFrom'])
+            # print(f"route_dict: {route_dict}")
             return current_flight_data_2
         except IndexError:
             return
@@ -197,7 +207,8 @@ class NotificationManager:
           <th>Fly from:</th>
           <th>Fly to:</th>
           <th>Stop overs:</th>
-          <th>Dates:</th>
+          <th>Departure/Return:</th>
+          <th>Nights:</th>
           <th>Ticket:</th>
           <th>Fare:</th>
         </tr>
@@ -264,15 +275,16 @@ class NotificationManager:
         with open("destination_data.json", "r") as data_file:
             destination_data = json.load(data_file)
 
-        for row in destination_data:
+        for row in destination_data[2:3]:
             try:
                 flight = check_flights(origin_destination="OTP", city_destination_code=row["IATA Code"])
                 if flight.stop_overs == 2:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
                                          f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
                                          f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                         f"<td>{flight.stop_overs} stop overs (See ticket for details)</td>" \
+                                         f"<td>Two stop overs</td>" \
                                          f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                         f"<td>{flight.nights_in_destination}</td>" \
                                          f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                          f"<td>€{flight.flight_price}</td></tr>"
                     print(f"Added row {flight.destination_city} 2 SO")
@@ -280,8 +292,9 @@ class NotificationManager:
                     self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
                                          f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
                                          f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                         f"<td>{flight.stop_overs} stop over, via {flight.via_city_1}</td>" \
+                                         f"<td>One stop over</td>" \
                                          f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                         f"<td>{flight.nights_in_destination}</td>" \
                                          f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                          f"<td>€{flight.flight_price}</td></tr>"
                     print(f"Added row {flight.destination_city} 1 SO")
@@ -291,6 +304,7 @@ class NotificationManager:
                                          f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
                                          f"<td>No stop overs</td>" \
                                          f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                         f"<td>{flight.nights_in_destination}</td>" \
                                          f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
                                          f"<td>€{flight.flight_price}</td></tr>"
                     print(f"Added row {flight.destination_city} 0 SO")
