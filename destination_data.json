@@ -228,10 +228,6 @@
         "IATA Code": "HAM"
     },
     {
-        "City": "Hamburg",
-        "IATA Code": "HAM"
-    },
-    {
         "City": "Hanoi",
         "IATA Code": "HAN"
     },
@@ -248,7 +244,7 @@
         "IATA Code": "HKG"
     },
     {
-        "City": "Honolulu (HI)",
+        "City": "Honolulu",
         "IATA Code": "HNL"
     },
     {
