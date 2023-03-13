@@ -24,24 +24,55 @@ HEADERS = {
 sheet_data_users = DataManager().get_email_list()
 
 
-def check_flights(origin_destination, city_destination_code):
+def check_flights(origin_destination, city_destination_code, destination_nights):
     """Passes the parameters, requests all the flight details from API
     and save only the required ones to print the destination city and the price"""
     values_dict = {}
-    params = {
-        "fly_from": origin_destination,
-        "fly_to": city_destination_code,
-        "date_from": tomorrow.strftime("%d/%m/%Y"),
-        "date_to": six_months_from_now.strftime("%d/%m/%Y"),
-        "nights_in_dst_from": 3,
-        "nights_in_dst_to": 14,
-        "flight_type": "round",
-        "curr": "EUR",
-        "select_airlines": "0B",  # avoid blue air
-        "select_airlines_exclude": "True",
-        "sort": "price",
-        "asc": "1"
-    }
+    if destination_nights == "4_nights" or origin_destination == "CLJ":
+        params = {
+            "fly_from": origin_destination,
+            "fly_to": city_destination_code,
+            "date_from": tomorrow.strftime("%d/%m/%Y"),
+            "date_to": six_months_from_now.strftime("%d/%m/%Y"),
+            "nights_in_dst_from": 3,
+            "nights_in_dst_to": 4,
+            "flight_type": "round",
+            "curr": "EUR",
+            "select_airlines": "0B",  # avoid blue air
+            "select_airlines_exclude": "True",
+            "sort": "price",
+            "asc": "1"
+        }
+    elif destination_nights == "7_nights":
+        params = {
+            "fly_from": origin_destination,
+            "fly_to": city_destination_code,
+            "date_from": tomorrow.strftime("%d/%m/%Y"),
+            "date_to": six_months_from_now.strftime("%d/%m/%Y"),
+            "nights_in_dst_from": 4,
+            "nights_in_dst_to": 7,
+            "flight_type": "round",
+            "curr": "EUR",
+            "select_airlines": "0B",  # avoid blue air
+            "select_airlines_exclude": "True",
+            "sort": "price",
+            "asc": "1"
+        }
+    elif destination_nights == "14_nights":
+        params = {
+            "fly_from": origin_destination,
+            "fly_to": city_destination_code,
+            "date_from": tomorrow.strftime("%d/%m/%Y"),
+            "date_to": six_months_from_now.strftime("%d/%m/%Y"),
+            "nights_in_dst_from": 6,
+            "nights_in_dst_to": 14,
+            "flight_type": "round",
+            "curr": "EUR",
+            "select_airlines": "0B",  # avoid blue air
+            "select_airlines_exclude": "True",
+            "sort": "price",
+            "asc": "1"
+        }
 
     def no_stopover():
         try:
@@ -272,44 +303,67 @@ class NotificationManager:
     def create_email(self):
         """Append the flight details for each found flight deal to the mail_content and send the email"""
 
-        with open("destination_data.json", "r") as data_file:
+        with open("destination_data.json", "r") as data_file:  # /home/ruganar/FlightDealPrivate/
             destination_data = json.load(data_file)
 
-        for row in destination_data:
-            try:
-                flight = check_flights(origin_destination="OTP", city_destination_code=row["IATA Code"])
-                if flight.stop_overs == 2:
-                    self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                         f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                         f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                         f"<td>Two stop overs</td>" \
-                                         f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                         f"<td>{flight.nights_in_destination}</td>" \
-                                         f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                         f"<td>€{flight.flight_price}</td></tr>"
-                    print(f"Added row {flight.destination_city} 2 SO")
-                elif flight.stop_overs == 1:
-                    self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                         f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                         f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                         f"<td>One stop over</td>" \
-                                         f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                         f"<td>{flight.nights_in_destination}</td>" \
-                                         f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                         f"<td>€{flight.flight_price}</td></tr>"
-                    print(f"Added row {flight.destination_city} 1 SO")
-                else:
-                    self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                         f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                         f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                         f"<td>No stop overs</td>" \
-                                         f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                         f"<td>{flight.nights_in_destination}</td>" \
-                                         f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                         f"<td>€{flight.flight_price}</td></tr>"
-                    print(f"Added row {flight.destination_city} 0 SO")
-            except IndexError:
-                continue
+        for nights_list in destination_data:  # destination_data[:-3:-1]:  # the last two items, reversed
+            for city in destination_data[nights_list]:
+                print(city)
+                try:
+                    flight = check_flights(origin_destination="OTP", city_destination_code=city["IATA Code"],
+                                           destination_nights=nights_list)
+                    if flight.stop_overs == 2:
+                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
+                                             f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                             f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                             f"<td>Two stop overs</td>" \
+                                             f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                             f"<td>{flight.nights_in_destination}</td>" \
+                                             f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                             f"<td>€{flight.flight_price}</td></tr>"
+                        print(f"Added row {flight.destination_city} 2 SO")
+                    elif flight.stop_overs == 1:
+                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
+                                             f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                             f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                             f"<td>One stop over</td>" \
+                                             f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                             f"<td>{flight.nights_in_destination}</td>" \
+                                             f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                             f"<td>€{flight.flight_price}</td></tr>"
+                        print(f"Added row {flight.destination_city} 1 SO")
+                    else:
+                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
+                                             f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+                                             f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+                                             f"<td>No stop overs</td>" \
+                                             f"<td>{flight.out_date} to {flight.return_date}</td>" \
+                                             f"<td>{flight.nights_in_destination}</td>" \
+                                             f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+                                             f"<td>€{flight.flight_price}</td></tr>"
+                        print(f"Added row {flight.destination_city} 0 SO")
+                except IndexError:
+                    continue
+
+        # # Departures from Cluj
+        # for nights_list in destination_data:
+        #     for row in nights_list:
+        #         try:
+        #             flight = check_flights(origin_destination="CLJ", city_destination_code=row["IATA Code"])
+        #             if flight.stop_overs == 0:
+        #                 self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
+        #                                      f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
+        #                                      f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
+        #                                      f"<td>No stop overs</td>" \
+        #                                      f"<td>{flight.out_date} to {flight.return_date}</td>" \
+        #                                      f"<td>{flight.nights_in_destination}</td>" \
+        #                                      f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
+        #                                      f"<td>€{flight.flight_price}</td></tr>"
+        #                 print(f"Added row {flight.destination_city} 0 SO")
+        #             else:
+        #                 continue
+        #         except IndexError:
+        #             continue
 
         # End of the email
         self.mail_content += """</table><br><br>
