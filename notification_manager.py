@@ -1,3 +1,4 @@
+import html
 from data_manager import DataManager
 from data_manager import STEINHQ_ENDPOINT_U, STEINHQ_HEADER
 from email.mime.multipart import MIMEMultipart
@@ -10,6 +11,9 @@ import json
 import requests
 from datetime import datetime, timedelta
 from flight_data import FlightData
+import pandas as pd
+from IPython.display import HTML
+
 
 tomorrow = datetime.now() + timedelta(days=1)
 six_months_from_now = datetime.now() + timedelta(days=180)
@@ -28,7 +32,7 @@ def check_flights(origin_destination, city_destination_code, destination_nights)
     """Passes the parameters, requests all the flight details from API
     and save only the required ones to print the destination city and the price"""
     values_dict = {}
-    if destination_nights == "4_nights" or origin_destination == "CLJ":
+    if destination_nights == "4_nights":
         params = {
             "fly_from": origin_destination,
             "fly_to": city_destination_code,
@@ -40,6 +44,7 @@ def check_flights(origin_destination, city_destination_code, destination_nights)
             "curr": "EUR",
             "select_airlines": "0B",  # avoid blue air
             "select_airlines_exclude": "True",
+            "adults": 1,
             "sort": "price",
             "asc": "1"
         }
@@ -55,6 +60,7 @@ def check_flights(origin_destination, city_destination_code, destination_nights)
             "curr": "EUR",
             "select_airlines": "0B",  # avoid blue air
             "select_airlines_exclude": "True",
+            "adults": 1,
             "sort": "price",
             "asc": "1"
         }
@@ -70,6 +76,7 @@ def check_flights(origin_destination, city_destination_code, destination_nights)
             "curr": "EUR",
             "select_airlines": "0B",  # avoid blue air
             "select_airlines_exclude": "True",
+            "adults": 1,
             "sort": "price",
             "asc": "1"
         }
@@ -226,24 +233,14 @@ class NotificationManager:
             font-size:13px;
             border-right: 1px solid #C1C3D1;
           }
+          td:nth-child(n+4):nth-child(-n+6) {
+          text-align:center;
+          background-color:blue;
+          }
         </style>
       </head>
       <body>
-        <h2>Today's best flight deals:</h2>
-      <table>
-      <thead>
-        <tr style="border: 1px solid #1b1e24;">
-        <tr>
-          <th>Destination Country:</th>
-          <th>Fly from:</th>
-          <th>Fly to:</th>
-          <th>Stop overs:</th>
-          <th>Departure/Return:</th>
-          <th>Nights:</th>
-          <th>Ticket:</th>
-          <th>Fare:</th>
-        </tr>
-      </thead>"""
+        <h2>Today's best flight deals:</h2>"""
 
     def update_email_list(self):
         """Reads the emails with new user's credentials and updates the google sheet"""
@@ -306,72 +303,59 @@ class NotificationManager:
         with open("destination_data.json", "r") as data_file:  # /home/ruganar/FlightDealPrivate/
             destination_data = json.load(data_file)
 
+        data_dict = {}
+        pandas_df = pd.DataFrame(data_dict, columns=["Destination Country:", "Fly from:", "Fly to:", "Stop overs:",
+                                                     "Departure/Return:", "Nights:", "Ticket:", "Fare:"])
+
         for nights_list in destination_data:  # destination_data[:-3:-1]:  # the last two items, reversed
-            for city in destination_data[nights_list]:
-                print(city)
+            for city in destination_data[nights_list]:  # {key: [{}, {}], key: [{}, {}], key: [{}, {}]}
                 try:
                     flight = check_flights(origin_destination="OTP", city_destination_code=city["IATA Code"],
                                            destination_nights=nights_list)
+                    # flight = check_flights(origin_destination="CLJ", city_destination_code="CFU",
+                    #                        destination_nights=nights_list)
                     if flight.stop_overs == 2:
-                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                             f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                             f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                             f"<td>Two stop overs</td>" \
-                                             f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                             f"<td>{flight.nights_in_destination}</td>" \
-                                             f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                             f"<td>€{flight.flight_price}</td></tr>"
-                        print(f"Added row {flight.destination_city} 2 SO")
+                        pandas_df.loc[len(pandas_df)] = [flight.destination_country,
+                                                         f"{flight.origin_city}-{flight.origin_airport}",
+                                                         f"{flight.destination_city}-{flight.destination_airport}", 2,
+                                                         f"{flight.out_date} to {flight.return_date}",
+                                                         flight.nights_in_destination,
+                                                         f"<a href={flight.flight_ticket}>Buy ticket!</a>",
+                                                         flight.flight_price]
+
                     elif flight.stop_overs == 1:
-                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                             f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                             f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                             f"<td>One stop over</td>" \
-                                             f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                             f"<td>{flight.nights_in_destination}</td>" \
-                                             f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                             f"<td>€{flight.flight_price}</td></tr>"
-                        print(f"Added row {flight.destination_city} 1 SO")
+                        pandas_df.loc[len(pandas_df)] = [flight.destination_country,
+                                                         f"{flight.origin_city}-{flight.origin_airport}",
+                                                         f"{flight.destination_city}-{flight.destination_airport}", 1,
+                                                         f"{flight.out_date} to {flight.return_date}",
+                                                         flight.nights_in_destination,
+                                                         f"<a href={flight.flight_ticket}>Buy ticket!</a>",
+                                                         flight.flight_price]
+
                     else:
-                        self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-                                             f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-                                             f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-                                             f"<td>No stop overs</td>" \
-                                             f"<td>{flight.out_date} to {flight.return_date}</td>" \
-                                             f"<td>{flight.nights_in_destination}</td>" \
-                                             f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-                                             f"<td>€{flight.flight_price}</td></tr>"
-                        print(f"Added row {flight.destination_city} 0 SO")
+                        pandas_df.loc[len(pandas_df)] = [flight.destination_country,
+                                                         f"{flight.origin_city}-{flight.origin_airport}",
+                                                         f"{flight.destination_city}-{flight.destination_airport}", 0,
+                                                         f"{flight.out_date} to {flight.return_date}",
+                                                         flight.nights_in_destination,
+                                                         f"<a href={flight.flight_ticket}>Buy ticket!</a>",
+                                                         flight.flight_price]
+
+                    break
                 except IndexError:
                     continue
-
-        # # Departures from Cluj
-        # for nights_list in destination_data:
-        #     for row in nights_list:
-        #         try:
-        #             flight = check_flights(origin_destination="CLJ", city_destination_code=row["IATA Code"])
-        #             if flight.stop_overs == 0:
-        #                 self.mail_content += f"<tr><td>✈️{flight.destination_country}</td>" \
-        #                                      f"<td>{flight.origin_city}-{flight.origin_airport}</td>" \
-        #                                      f"<td>{flight.destination_city}-{flight.destination_airport}</td>" \
-        #                                      f"<td>No stop overs</td>" \
-        #                                      f"<td>{flight.out_date} to {flight.return_date}</td>" \
-        #                                      f"<td>{flight.nights_in_destination}</td>" \
-        #                                      f"<td><a href={flight.flight_ticket}>Buy ticket!</a></td>" \
-        #                                      f"<td>€{flight.flight_price}</td></tr>"
-        #                 print(f"Added row {flight.destination_city} 0 SO")
-        #             else:
-        #                 continue
-        #         except IndexError:
-        #             continue
+        sorted_df = pandas_df.sort_values("Fare:")
+        table_df = sorted_df.to_html()
+        self.mail_content += html.unescape(table_df)
 
         # End of the email
-        self.mail_content += """</table><br><br>
+        self.mail_content += """<br><br>
         <p><i>Ensure that you open the ticket link in a private window to get the actual price, 
         however the price can change at any time. If you wish to 
         unsubscribe from this email, please reply with "Unsubscribe".</i></p>
         <p>My flight club can be found <a href=https://y3kksc.webwave.dev/info>here</a> and feel free to share it.</p>
-        <h2>Happy Travels,<br>Adrian Mihăilă</h2></body></html>"""
+        <h2>Happy Travels,<br>Adrian Mihăilă</h2>
+        </body></html>"""
 
         # Get the email list
         email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list
