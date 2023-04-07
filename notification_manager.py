@@ -208,8 +208,14 @@ class NotificationManager:
             font-size:14px;
             font-weight: 300;
             padding:10px;
-            text-align:center;
+            text-align:left;
             vertical-align:middle;
+          }
+          th.shrink {
+            white-space:nowrap
+          }
+          th.expand {
+            width: 100%
           }
           tr {
             border-top: 1px solid #C1C3D1;
@@ -233,9 +239,15 @@ class NotificationManager:
             font-size:13px;
             border-right: 1px solid #C1C3D1;
           }
+          td.shrink {
+            white-space:nowrap
+          }
+          td.expand {
+            width: 100%
+          }
           td:nth-child(n+4):nth-child(-n+6) {
-          text-align:center;
-          background-color:blue;
+            text-align:center;
+            background-color:blue;
           }
         </style>
       </head>
@@ -304,8 +316,8 @@ class NotificationManager:
             destination_data = json.load(data_file)
 
         data_dict = {}
-        pandas_df = pd.DataFrame(data_dict, columns=["Destination Country:", "Fly from:", "Fly to:", "Stop overs:",
-                                                     "Departure/Return:", "Nights:", "Ticket:", "Fare:"])
+        pandas_df = pd.DataFrame(data_dict, columns=["Destination Country", "Fly from", "Fly to", "Stop overs",
+                                                     "Departure/Return", "Nights", "Ticket", "Fare"])
 
         for nights_list in destination_data:  # destination_data[:-3:-1]:  # the last two items, reversed
             for city in destination_data[nights_list]:  # {key: [{}, {}], key: [{}, {}], key: [{}, {}]}
@@ -341,10 +353,9 @@ class NotificationManager:
                                                          f"<a href={flight.flight_ticket}>Buy ticket!</a>",
                                                          flight.flight_price]
 
-                    break
                 except IndexError:
                     continue
-        sorted_df = pandas_df.sort_values("Fare:")
+        sorted_df = pandas_df.sort_values("Fare").reset_index(drop=True)
         table_df = sorted_df.to_html()
         self.mail_content += html.unescape(table_df)
 
