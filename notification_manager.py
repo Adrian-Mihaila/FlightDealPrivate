@@ -186,73 +186,95 @@ class NotificationManager:
         self.sender_address = "my.pythondroid@gmail.com"
         self.sender_pass = "juawybogorauuxfz"
         self.mail_content = """
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8" />
-        <style type="text/css">
-          table {
-            background: white;
-            border-radius:3px;
-            border-collapse: collapse;
-            height: auto;
-            max-width: 900px;
-            padding:5px;
-            width: 100%;
-            animation: float 5s infinite;
-          }
-          th {
-            color:#D5DDE5;;
-            background:#1b1e24;
-            border-bottom: 4px solid #9ea7af;
-            font-size:14px;
-            font-weight: 300;
-            padding:10px;
-            text-align:left;
-            vertical-align:middle;
-          }
-          th.shrink {
-            white-space:nowrap
-          }
-          th.expand {
-            width: 100%
-          }
-          tr {
-            border-top: 1px solid #C1C3D1;
-            border-bottom: 1px solid #C1C3D1;
-            border-left: 1px solid #C1C3D1;
-            color:#666B85;
-            font-size:16px;
-            font-weight:normal;
-          }
-          tr:hover td {
-            background:#4E5066;
-            color:#FFFFFF;
-            border-top: 1px solid #22262e;
-          }
-          td {
-            background:#FFFFFF;
-            padding:10px;
-            text-align:left;
-            vertical-align:middle;
-            font-weight:300;
-            font-size:13px;
-            border-right: 1px solid #C1C3D1;
-          }
-          td.shrink {
-            white-space:nowrap
-          }
-          td.expand {
-            width: 100%
-          }
-          td:nth-child(n+4):nth-child(-n+6) {
-            text-align:center;
-            background-color:blue;
-          }
-        </style>
-      </head>
-      <body>
-        <h2>Today's best flight deals:</h2>"""
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style type="text/css">
+table {
+  background: white;
+  border-radius: 3px;
+  border-collapse: collapse;
+  height: auto;
+  max-width: 900px;
+  padding: 5px;
+  width: 100%;
+  animation: float 5s infinite;
+}
+
+th {
+  color: #d5dde5;
+  background: #1b1e24;
+  border-bottom: 4px solid #9ea7af;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 10px 3px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th.shrink,
+td.shrink {
+  white-space: nowrap;
+}
+
+th.expand,
+td.expand {
+  width: 100%;
+  overflow: hidden;
+}
+
+tr {
+  border-top: 1px solid #c1c3d1;
+  border-bottom: 1px solid #c1c3d1;
+  border-left: 1px solid #c1c3d1;
+  color: #666b85;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+tr:hover td {
+  background: #4e5066;
+  color: #ffffff;
+  border-top: 1px solid #22262e;
+}
+
+td {
+  background: #ffffff;
+  padding: 10px 3px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 300;
+  font-size: 13px;
+  border-right: 1px solid #c1c3d1;
+}
+
+td.shrink {
+  white-space: nowrap;
+}
+
+td.expand {
+  width: 100%;
+  overflow: hidden;
+}
+
+td:nth-child(n+5):nth-child(-n+5) {
+  text-align: center;
+/*   background-color: blue; */
+}
+td:nth-child(n+7):nth-child(-n+7) {
+  text-align: center;
+/*   background-color: blue; */
+}
+th, td {
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Hides overflow text */
+  text-overflow: ellipsis; /* Truncates text with ellipsis */
+}
+</style>
+</head>
+<body>
+<h2>Today's best flight deals:</h2>"""
 
     def update_email_list(self):
         """Reads the emails with new user's credentials and updates the google sheet"""
