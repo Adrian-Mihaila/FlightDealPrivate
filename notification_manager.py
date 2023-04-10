@@ -12,7 +12,7 @@ import requests
 from datetime import datetime, timedelta
 from flight_data import FlightData
 import pandas as pd
-from IPython.display import HTML
+from IPython.display import display
 
 
 tomorrow = datetime.now() + timedelta(days=1)
@@ -185,96 +185,6 @@ class NotificationManager:
 
         self.sender_address = "my.pythondroid@gmail.com"
         self.sender_pass = "juawybogorauuxfz"
-        self.mail_content = """
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<style type="text/css">
-table {
-  background: white;
-  border-radius: 3px;
-  border-collapse: collapse;
-  height: auto;
-  max-width: 900px;
-  padding: 5px;
-  width: 100%;
-  animation: float 5s infinite;
-}
-
-th {
-  color: #d5dde5;
-  background: #1b1e24;
-  border-bottom: 4px solid #9ea7af;
-  font-size: 14px;
-  font-weight: 300;
-  padding: 10px 3px;
-  text-align: left;
-  vertical-align: middle;
-}
-
-th.shrink,
-td.shrink {
-  white-space: nowrap;
-}
-
-th.expand,
-td.expand {
-  width: 100%;
-  overflow: hidden;
-}
-
-tr {
-  border-top: 1px solid #c1c3d1;
-  border-bottom: 1px solid #c1c3d1;
-  border-left: 1px solid #c1c3d1;
-  color: #666b85;
-  font-size: 16px;
-  font-weight: normal;
-}
-
-tr:hover td {
-  background: #4e5066;
-  color: #ffffff;
-  border-top: 1px solid #22262e;
-}
-
-td {
-  background: #ffffff;
-  padding: 10px 3px;
-  text-align: left;
-  vertical-align: middle;
-  font-weight: 300;
-  font-size: 13px;
-  border-right: 1px solid #c1c3d1;
-}
-
-td.shrink {
-  white-space: nowrap;
-}
-
-td.expand {
-  width: 100%;
-  overflow: hidden;
-}
-
-td:nth-child(n+5):nth-child(-n+5) {
-  text-align: center;
-/*   background-color: blue; */
-}
-td:nth-child(n+7):nth-child(-n+7) {
-  text-align: center;
-/*   background-color: blue; */
-}
-th, td {
-  white-space: nowrap; /* Prevents text from wrapping */
-  overflow: hidden; /* Hides overflow text */
-  text-overflow: ellipsis; /* Truncates text with ellipsis */
-}
-</style>
-</head>
-<body>
-<h2>Today's best flight deals:</h2>"""
 
     def update_email_list(self):
         """Reads the emails with new user's credentials and updates the google sheet"""
@@ -339,7 +249,7 @@ th, td {
 
         data_dict = {}
         pandas_df = pd.DataFrame(data_dict, columns=["Destination Country", "Fly from", "Fly to", "Stop overs",
-                                                     "Departure/Return", "Nights", "Ticket", "Fare"])
+                                                     "Departure/Return", "Nights", "Ticket", "Fare(€)"])
 
         for nights_list in destination_data:  # destination_data[:-3:-1]:  # the last two items, reversed
             for city in destination_data[nights_list]:  # {key: [{}, {}], key: [{}, {}], key: [{}, {}]}
@@ -377,18 +287,10 @@ th, td {
 
                 except IndexError:
                     continue
-        sorted_df = pandas_df.sort_values("Fare").reset_index(drop=True)
-        table_df = sorted_df.to_html()
-        self.mail_content += html.unescape(table_df)
-
-        # End of the email
-        self.mail_content += """<br><br>
-        <p><i>Ensure that you open the ticket link in a private window to get the actual price, 
-        however the price can change at any time. If you wish to 
-        unsubscribe from this email, please reply with "Unsubscribe".</i></p>
-        <p>My flight club can be found <a href=https://y3kksc.webwave.dev/info>here</a> and feel free to share it.</p>
-        <h2>Happy Travels,<br>Adrian Mihăilă</h2>
-        </body></html>"""
+        sorted_df = pandas_df.sort_values("Fare(€)").reset_index(drop=True)
+        under_100 = len(sorted_df[sorted_df['Fare(€)'] < 100])
+        display(sorted_df)
+        table_df = html.unescape(sorted_df.to_html())
 
         # Get the email list
         email_list = [row["Email"].strip() for row in sheet_data_users]  # call the old list
@@ -407,8 +309,108 @@ th, td {
                     add_new_user.raise_for_status()
 
         # Send the email to each recipient
-        for _ in email_list[:1]:
-            self.send_email(mail_content=self.mail_content, receiver_address_list=_.split())  # Send email
+        for row in sheet_data_users:
+            user_email = row["Email"].strip()
+            user_first_name = row["First Name"].strip()
+            mail_content = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <meta charset="utf-8" />
+            <style type="text/css">
+            table {
+              background: white;
+              border-radius: 3px;
+              border-collapse: collapse;
+              height: auto;
+              max-width: 900px;
+              padding: 5px;
+              width: 100%;
+              animation: float 5s infinite;
+            }
+
+            th {
+              color: #d5dde5;
+              background: #1b1e24;
+              border-bottom: 4px solid #9ea7af;
+              font-size: 14px;
+              font-weight: 300;
+              padding: 10px 3px;
+              text-align: left;
+              vertical-align: middle;
+            }
+
+            th.shrink,
+            td.shrink {
+              white-space: nowrap;
+            }
+
+            th.expand,
+            td.expand {
+              width: 100%;
+              overflow: hidden;
+            }
+
+            tr {
+              border-top: 1px solid #c1c3d1;
+              border-bottom: 1px solid #c1c3d1;
+              border-left: 1px solid #c1c3d1;
+              color: #666b85;
+              font-size: 16px;
+              font-weight: normal;
+            }
+
+            tr:hover td {
+              background: #4e5066;
+              color: #ffffff;
+              border-top: 1px solid #22262e;
+            }
+
+            td {
+              background: #ffffff;
+              padding: 10px 3px;
+              text-align: left;
+              vertical-align: middle;
+              font-weight: 300;
+              font-size: 13px;
+              border-right: 1px solid #c1c3d1;
+            }
+
+            td.shrink {
+              white-space: nowrap;
+            }
+
+            td.expand {
+              width: 100%;
+              overflow: hidden;
+            }
+
+            td:nth-child(n+5):nth-child(-n+5) {
+              text-align: center;
+            /*   background-color: blue; */
+            }
+            td:nth-child(n+7):nth-child(-n+7) {
+              text-align: center;
+            /*   background-color: blue; */
+            }
+            th, td {
+              white-space: nowrap; /* Prevents text from wrapping */
+              overflow: hidden; /* Hides overflow text */
+              text-overflow: ellipsis; /* Truncates text with ellipsis */
+            }
+            </style>
+            </head>"""
+            mail_content += f"""<body><h2>Greetings {user_first_name},</h2>
+                    <p>Today's best flight deals include {under_100} round trips under €100.<br>"""
+            mail_content += table_df
+            mail_content += """<br>
+                    <p><i>Ensure that you open the ticket link in a private window to get the actual price, 
+                    however the price can change at any time. If you wish to 
+                    unsubscribe from this email, please reply with "Unsubscribe".</i></p>
+                    <p>My flight club can be found <a href=https://y3kksc.webwave.dev/info>here</a> and feel free to share it.</p>
+                    <h2>Happy Travels,<br>Adrian Mihăilă</h2>
+                    </body></html>"""
+            self.send_email(mail_content=mail_content, receiver_address_list=user_email.split())  # Send email
 
     def send_email(self, mail_content, receiver_address_list):
         """Sends the email"""
