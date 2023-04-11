@@ -300,6 +300,30 @@
     ],
     "7_nights": [
         {
+            "City": "Kefalonia",
+            "IATA Code": "EFL"
+        },
+        {
+            "City": "Heraklion",
+            "IATA Code": "HER"
+        },
+        {
+            "City": "Chania",
+            "IATA Code": "CHQ"
+        },
+        {
+            "City": "Santorini",
+            "IATA Code": "JTR"
+        },
+        {
+            "City": "Zakynthos",
+            "IATA Code": "ZTH"
+        },
+        {
+            "City": "Mykonos",
+            "IATA Code": "JMK"
+        },
+        {
             "City": "Anchorage",
             "IATA Code": "ANC"
         },
