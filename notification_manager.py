@@ -18,7 +18,7 @@ from IPython.display import display
 tomorrow = datetime.now() + timedelta(days=1)
 six_months_from_now = datetime.now() + timedelta(days=180)
 
-API_KEY = "8nrhLLE0o2OiHKRLWq0GDuWbKkQ2DKJh"
+API_KEY = "llIjCIFCu03QRszS-ATo52H7QQbTh1_v"  # "8nrhLLE0o2OiHKRLWq0GDuWbKkQ2DKJh"
 API_ENDPOINT_QUERY = "https://tequila-api.kiwi.com/locations/query"
 API_ENDPOINT_SEARCH = "https://tequila-api.kiwi.com/v2/search"
 HEADERS = {
@@ -252,7 +252,7 @@ class NotificationManager:
                                                      "Departure/Return", "Nights", "Ticket", "Fare(€)"])
 
         for nights_list in destination_data:  # destination_data[:-3:-1]:  # the last two items, reversed
-            for city in destination_data[nights_list]:  # {key: [{}, {}], key: [{}, {}], key: [{}, {}]}
+            for city in destination_data[nights_list][2]:  # {key: [{}, {}], key: [{}, {}], key: [{}, {}]}
                 try:
                     flight = check_flights(origin_destination="OTP", city_destination_code=city["IATA Code"],
                                            destination_nights=nights_list)

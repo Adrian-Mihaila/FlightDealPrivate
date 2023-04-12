@@ -81,6 +81,10 @@
             "IATA Code": "BIO"
         },
         {
+            "City": "Bogota",
+            "IATA Code": "BOG"
+        },
+        {
             "City": "Bratislava",
             "IATA Code": "BTS"
         },
@@ -116,6 +120,7 @@
             "City": "Copenhagen",
             "IATA Code": "CPH"
         },
+
         {
             "City": "Dublin",
             "IATA Code": "DUB"
@@ -133,6 +138,10 @@
             "IATA Code": "FRA"
         },
         {
+            "City": "Geneva",
+            "IATA Code": "GVA"
+        },
+        {
             "City": "Glasgow",
             "IATA Code": "GLA"
         },
@@ -147,6 +156,10 @@
         {
             "City": "Helsinki",
             "IATA Code": "HEL"
+        },
+        {
+            "City": "Kraków",
+            "IATA Code": "KRK"
         },
         {
             "City": "Lisbon",
@@ -315,6 +328,10 @@
             "IATA Code": "ANC"
         },
         {
+            "City": "Caracas",
+            "IATA Code": "CCS"
+        },
+        {
             "City": "Adelaide",
             "IATA Code": "ADL"
         },
@@ -359,6 +376,10 @@
             "IATA Code": "NYC"
         },
         {
+            "City": "Nairobi",
+            "IATA Code": "NBO"
+        },
+        {
             "City": "Kuala Lumpur",
             "IATA Code": "KUL"
         },
@@ -379,7 +400,7 @@
             "IATA Code": "KHI"
         },
         {
-            "City": "Kathmandu",
+            "City": "Kathmandu ",
             "IATA Code": "KTM"
         },
         {
@@ -397,6 +418,10 @@
         {
             "City": "Honolulu",
             "IATA Code": "HNL"
+        },
+        {
+            "City": "Islamabad",
+            "IATA Code": "ISB"
         },
         {
             "City": "Corfu",
@@ -421,13 +446,13 @@
         {
             "City": "Bahamas",
             "IATA Code": "NAS"
+        },
+        {
+            "City": "Brasilia",
+            "IATA Code": "BSB"
         }
     ],
     "14_nights": [
-        {
-            "City": "Bora Bora",
-            "IATA Code": "BOB"
-        },
         {
             "City": "Abuja",
             "IATA Code": "ABV"
@@ -483,6 +508,14 @@
         {
             "City": "Istanbul",
             "IATA Code": "IST"
+        },
+        {
+            "City": "Hanoi",
+            "IATA Code": "HAN"
+        },
+        {
+            "City": "Guatemala City",
+            "IATA Code": "GUA"
         }
     ]
 }
